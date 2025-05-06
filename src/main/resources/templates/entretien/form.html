@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layouts/base">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulaire Entretien</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="container mt-5">
+
+        <!-- Titre -->
+        <h2 class="mb-4" th:text="${entretien.id != null} ? 'Modifier Entretien' : 'Ajouter Entretien'">Ajouter Entretien</h2>
+
+        <!-- Formulaire de modification -->
+        <form th:if="${entretien.id != null}"
+              th:action="@{/entretien/update/{id}(id=${entretien.id})}"
+              th:object="${entretien}" method="post" class="row g-3">
+
+            <div class="col-md-6">
+                <label for="date" class="form-label">Date :</label>
+                <input id="date" type="datetime-local" th:field="*{date}" class="form-control" required />
+            </div>
+
+            <div class="col-md-6">
+                <label for="lieu" class="form-label">Lieu :</label>
+                <input id="lieu" type="text" th:field="*{lieu}" class="form-control" required />
+            </div>
+
+            <div class="col-md-6">
+                <label for="statut" class="form-label">Statut :</label>
+                <select id="statut" th:field="*{statut}" class="form-select">
+                    <option value="PLANIFIE">Planifié</option>
+                    <option value="EN_COURS">En Cours</option>
+                    <option value="TERMINE">Terminé</option>
+                </select>
+            </div>
+
+            <div class="col-md-6">
+                <label for="candidat" class="form-label">Candidat :</label>
+                <select id="candidat" th:field="*{candidat}" required>
+                    <option value="">-- Sélectionner un candidat --</option>
+                    <option th:each="candidat : ${candidats}"
+                            th:value="${candidat.id}"
+                            th:text="${candidat.nom}"
+                            th:selected="${entretien.candidat != null && entretien.candidat.id == candidat.id}"></option>
+                </select>
+            </div>
+
+            <div class="col-md-6">
+                <label for="recruteur" class="form-label">Recruteur :</label>
+                <select id="recruteur" th:field="*{recruteur}" class="form-select" required>
+                    <option value="">-- Sélectionner un recruteur --</option>
+                    <option th:each="recruteur : ${recruteurs}" th:value="${recruteur.id}" th:text="${recruteur.nom}"></option>
+                </select>
+            </div>
+
+            <div class="col-12">
+                <label for="compteRendu" class="form-label">Compte Rendu :</label>
+                <textarea id="compteRendu" th:field="*{compteRendu}" class="form-control" rows="4"></textarea>
+            </div>
+
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary">Modifier</button>
+                <a href="/entretien" class="btn btn-secondary ms-2">Retour à la liste</a>
+            </div>
+        </form>
+
+        <!-- Formulaire d'ajout -->
+        <form th:if="${entretien.id == null}"
+              th:action="@{/entretien}"
+              th:object="${entretien}" method="post" class="row g-3">
+            <!-- Même contenu que ci-dessus -->
+            <!-- Réutilise les mêmes champs pour éviter les répétitions si besoin -->
+        </form>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

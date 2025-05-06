@@ -25,30 +25,25 @@ public class RapportService {
     @Autowired
     private RapportRepository rapportRepository;
 
-    // Récupérer tous les rapports
     public List<Rapport> getAllRapports() {
         return rapportRepository.findAll();
     }
 
-    // Récupérer un rapport par ID
     public Rapport getRapportById(int id) {
         Optional<Rapport> rapport = rapportRepository.findById(id);
         return rapport.orElseThrow(() -> new RuntimeException("Rapport non trouvé"));
     }
 
-    // Créer un nouveau rapport
-    public Rapport createRapport() {
+    public Rapport createRapport(Rapport s) {
         Rapport rapport = new Rapport();
         return rapportRepository.save(rapport);
     }
 
-    // Supprimer un rapport
     public void deleteRapport(int id) {
         Rapport rapport = getRapportById(id);
         rapportRepository.delete(rapport);
     }
 
-    // Générer un rapport en PDF
     public File genererPDF(int rapportId) throws Exception {
         Rapport rapport = getRapportById(rapportId);
         String fileName = "rapport_" + rapportId + ".pdf";
@@ -61,13 +56,11 @@ public class RapportService {
         document.add(new Paragraph("Rapport ID: " + rapportId));
         document.add(new Paragraph("Date de création: " + LocalDate.now()));
         document.add(new Paragraph("Contenu du rapport: Exemple de données statistiques."));
-        // Ajouter plus de données selon tes besoins (par exemple, statistiques sur les entretiens)
 
         document.close();
         return file;
     }
 
-    // Générer un rapport en Excel
     public File exporterExcel(int rapportId) throws Exception {
         Rapport rapport = getRapportById(rapportId);
         String fileName = "rapport_" + rapportId + ".xlsx";
@@ -76,18 +69,15 @@ public class RapportService {
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet("Rapport");
 
-        // Créer une ligne d'en-tête
         Row headerRow = sheet.createRow(0);
         headerRow.createCell(0).setCellValue("Rapport ID");
         headerRow.createCell(1).setCellValue("Date de création");
         headerRow.createCell(2).setCellValue("Contenu");
 
-        // Ajouter des données
         Row dataRow = sheet.createRow(1);
         dataRow.createCell(0).setCellValue(rapportId);
         dataRow.createCell(1).setCellValue(LocalDate.now().toString());
         dataRow.createCell(2).setCellValue("Exemple de données statistiques.");
-        // Ajouter plus de données selon tes besoins
 
         try (FileOutputStream fileOut = new FileOutputStream(file)) {
             workbook.write(fileOut);

@@ -1,34 +1,32 @@
 package com.example.master_app.entities;
 
+import com.example.master_app.enumes.Role;
 import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.PrimaryKeyJoinColumn;
 import jakarta.persistence.Table;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-import java.util.List;
 
 @Entity
 @Table(name = "rh")
-@PrimaryKeyJoinColumn(name = "id")
-@Getter
-@Setter
-@NoArgsConstructor
 public class RH extends Utilisateur {
-    @OneToMany(mappedBy = "rh")
-    private List<Entretien> entretiens;
 
-    public void gererUtilisateurs() {
-        // Logique pour gérer les utilisateurs
+    // Champs spécifiques au RH, si nécessaire
+    private String departement;
+
+    // Constructeur par défaut
+    public RH() {
     }
 
-    public void superviserEntretiens() {
-        // Logique pour superviser les entretiens
+    // Constructeur avec tous les champs
+    public RH(int id, String nom, String email, String motDePasse, Role role, String departement) {
+        super(id, nom, email, motDePasse, role);
+        this.departement = departement;
     }
 
-    public void genererRapports() {
-        // Logique pour générer des rapports
+    // Getters et Setters
+    public String getDepartement() {
+        return departement;
+    }
+
+    public void setDepartement(String departement) {
+        this.departement = departement;
     }
 }

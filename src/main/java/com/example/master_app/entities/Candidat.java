@@ -1,26 +1,32 @@
 package com.example.master_app.entities;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import java.util.List;
-import jakarta.persistence.*;
+import com.example.master_app.enumes.Role;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "candidat")
-@PrimaryKeyJoinColumn(name = "id")
-@Getter
-@Setter
-@NoArgsConstructor
 public class Candidat extends Utilisateur {
-    @OneToMany(mappedBy = "candidat")
-    private List<Entretien> entretiens;
 
-    public void consulterInformations() {
-        // Logique pour consulter les informations
+    // Champ spécifique au candidat
+    private String cvPath;
+
+    // Constructeur par défaut
+    public Candidat() {
     }
 
-    public void confirmerEntretien() {
-        // Logique pour confirmer un entretien
+    // Constructeur avec tous les champs
+    public Candidat(int id, String nom, String email, String motDePasse, Role role, String cvPath) {
+        super(id, nom, email, motDePasse, role);
+        this.cvPath = cvPath;
+    }
+
+    // Getters et Setters
+    public String getCvPath() {
+        return cvPath;
+    }
+
+    public void setCvPath(String cvPath) {
+        this.cvPath = cvPath;
     }
 }

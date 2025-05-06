@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.w3.org/1999/xhtml"
+      layout:decorate="layouts/base">
+<head>
+    <title>Liste des Utilisateurs</title>
+    <!-- Lien vers le CDN Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div layout:fragment="content">
+    <div id="content" class="container mt-5">
+        <h1 class="text-center mb-4">Liste des Utilisateurs</h1>
+
+        <!-- Si la liste d'utilisateurs est vide -->
+        <div th:if="${utilisateurs == null or utilisateurs.isEmpty()}" class="alert alert-warning">
+            <p>Aucun utilisateur trouvé. <a href="/utilisateur/new" class="btn btn-primary">Créer un utilisateur</a></p>
+        </div>
+
+        <!-- Table d'utilisateurs -->
+        <table th:unless="${utilisateurs == null or utilisateurs.isEmpty()}" class="table table-striped table-bordered">
+            <thead class="thead-dark">
+            <tr>
+                <th>ID</th>
+                <th>Nom</th>
+                <th>Email</th>
+                <th>Rôle</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="utilisateur : ${utilisateurs}">
+                <td th:text="${utilisateur.id}"></td>
+                <td th:text="${utilisateur.nom}"></td>
+                <td th:text="${utilisateur.email}"></td>
+                <td th:text="${utilisateur.role}"></td>
+                <td>
+                    <a th:href="@{/utilisateur/edit/{id}(id=${utilisateur.id})}" class="btn btn-warning btn-sm">Modifier</a>
+                    <a th:href="@{/utilisateur/delete/{id}(id=${utilisateur.id})}" class="btn btn-danger btn-sm">Supprimer</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <!-- Lien pour créer un nouvel utilisateur -->
+        <div class="text-center mt-3">
+            <a href="/utilisateur/new" class="btn btn-success">Créer un nouvel utilisateur</a>
+        </div>
+    </div>
+</div>
+
+<!-- Lien vers le JS Bootstrap -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

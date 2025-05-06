@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.w3.org/1999/xhtml"
+      layout:decorate="layouts/base">
+<head>
+    <title>Génération Rapport</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h2>Rapport Généré</h2>
+    <p>Le fichier a été généré avec succès. Téléchargez-le ici :</p>
+    <a th:href="@{'/download?file=' + ${filePath}}" th:text="'Télécharger ' + ${filePath}">Télécharger</a>
+    <p><a th:href="@{/rapport}">Retour à la liste</a></p>
+</div>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.w3.org/1999/xhtml"
+      layout:decorate="layouts/base">
+<head>
+    <title>Liste des Rapports</title>
+    <!-- Lien vers le CDN Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">Liste des Rapports</h2>
+
+        <!-- Lien pour ajouter un rapport -->
+        <div class="mb-3 text-center">
+            <a th:href="@{/rapport/new}" class="btn btn-primary">Ajouter un Rapport</a>
+        </div>
+
+        <!-- Table des rapports -->
+        <table th:unless="${rapport.isEmpty()}" class="table table-striped table-bordered">
+            <thead class="thead-dark">
+            <tr>
+                <th>ID</th>
+                <th>Date de création</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="rapport : ${rapport}">
+                <td th:text="${rapport.id}">ID</td>
+                <td th:text="${rapport.dateCreation}">Date</td>
+                <td>
+                    <a th:href="@{/rapport/generate/{id}/pdf(id=${rapport.id})}" class="btn btn-success btn-sm">Générer PDF</a> |
+                    <a th:href="@{/rapport/generate/{id}/excel(id=${rapport.id})}" class="btn btn-warning btn-sm">Exporter Excel</a> |
+                    <a th:href="@{/rapport/delete/{id}(id=${rapport.id})}" class="btn btn-danger btn-sm" onclick="return confirm('Confirmer la suppression ?');">Supprimer</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <!-- Si aucun rapport n'est trouvé -->
+        <div th:if="${rapport.isEmpty()}" class="alert alert-warning text-center">
+            Aucun rapport trouvé.
+        </div>
+    </div>
+</div>
+
+<!-- Lien vers le JS Bootstrap -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
