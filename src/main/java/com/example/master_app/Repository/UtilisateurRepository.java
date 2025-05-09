@@ -17,4 +17,6 @@ public interface UtilisateurRepository extends JpaRepository<Utilisateur, Intege
 
     // Requête personnalisée pour trouver tous les utilisateurs d'un rôle spécifique
     List<Utilisateur> findByRole(Role role);
+
+
 }
