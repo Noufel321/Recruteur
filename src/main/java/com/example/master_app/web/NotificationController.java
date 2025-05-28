@@ -21,14 +21,14 @@ public class NotificationController {
     @GetMapping
     public String getAllNotifications(Model model) {
         List<Notification> notifications = notificationService.getAllNotifications();
-        model.addAttribute("notifications", notifications); // Correction : utiliser "notifications" au lieu de "notification"
-        return "notification/list";
+        model.addAttribute("notifications", notifications);
+        return "notification/list"; // fichier list.html dans dossier templates/notification/
     }
 
     @GetMapping("/entretien/{entretienId}")
     public String getNotificationsByEntretienId(@PathVariable int entretienId, Model model) {
         List<Notification> notifications = notificationService.getNotificationsByEntretienId(entretienId);
-        model.addAttribute("notifications", notifications); // Correction : utiliser "notifications" au lieu de "notification"
+        model.addAttribute("notifications", notifications);
         model.addAttribute("entretienId", entretienId);
         return "notification/list";
     }

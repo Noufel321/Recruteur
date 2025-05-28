@@ -2,15 +2,23 @@ package com.example.master_app.entities;
 
 import com.example.master_app.enumes.Role;
 import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 
+import java.util.List;
+
+@Getter
+@Setter
 @Entity
 @Table(name = "candidat")
 public class Candidat extends Utilisateur {
 
     // Champ spécifique au candidat
     private String cvPath;
-
+    @OneToMany(mappedBy = "candidat")
+    private List<Evaluation> evaluations;
     // Constructeur par défaut
     public Candidat() {
     }
@@ -21,12 +29,4 @@ public class Candidat extends Utilisateur {
         this.cvPath = cvPath;
     }
 
-    // Getters et Setters
-    public String getCvPath() {
-        return cvPath;
-    }
-
-    public void setCvPath(String cvPath) {
-        this.cvPath = cvPath;
-    }
 }

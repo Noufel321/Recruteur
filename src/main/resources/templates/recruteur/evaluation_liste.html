@@ -18,16 +18,17 @@
         </div>
 
         <div class="list-group-item mb-2" th:each="evaluation : ${evaluations}">
-            <p><strong>Candidat :</strong> <span th:text="${evaluation.candidat.nom} + ' ' + ${evaluation.candidat.prenom}"></span></p>
+            <p><strong>Candidat :</strong> <span th:text="${evaluation.candidat.nom}"></span></p>
             <p><strong>Note :</strong> <span th:text="${evaluation.note}"></span>/20</p>
             <p><strong>Commentaire :</strong> <span th:text="${evaluation.commentaire}"></span></p>
             <p><strong>Date de l'évaluation :</strong> <span th:text="${evaluation.dateEvaluation}"></span></p>
 
             <div class="d-flex justify-content-between">
-                <a th:href="@{/recruteur/evaluations/modify/{id}(id=${evaluation.id})}" class="btn btn-warning btn-sm">Modifier</a>
-                <form th:action="@{/recruteur/evaluations/delete/{id}(id=${evaluation.id})}" method="post">
-                    <button type="submit" class="btn btn-danger btn-sm">Supprimer</button>
-                </form>
+                <td>
+                    <a th:href="@{'/recruteur/evaluations/modifier/' + ${evaluation.id}}"class="btn btn-warning btn-sm">Modifier</a> |
+                    <a th:href="@{'/recruteur/evaluations/supprimer/' + ${evaluation.id}}"
+                       onclick="return confirm('Voulez-vous vraiment supprimer cette évaluation ?');" class="btn btn-danger btn-sm">Supprimer</a>
+                </td>
             </div>
         </div>
     </div>
@@ -36,6 +37,6 @@
         <a href="/recruteur/home" class="btn btn-secondary">Retour à l’accueil</a>
     </div>
 </div>
-
+</div>
 </body>
 </html>

@@ -1,10 +1,78 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layouts/base">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <title>Ajouter/Modifier les disponibilités</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-$END$
+<div layout:fragment="content" class="container mt-5">
+    <h1 class="text-center mb-4">Ajouter ou Modifier vos disponibilités</h1>
+
+    <!-- ✅ Message de confirmation (à définir côté contrôleur) -->
+    <div th:if="${message}" class="alert alert-success text-center" th:text="${message}"></div>
+
+    <!-- ✅ Formulaire -->
+    <form th:action="@{/recruteur/disponibilites}" method="post" th:object="${disponibilite}">
+        <input type="hidden" th:field="*{id}" /> <!-- Champ caché pour modification -->
+
+        <div class="mb-3">
+            <label for="jour" class="form-label">Jour :</label>
+            <input type="date" id="jour" name="jour" class="form-control" th:field="*{jour}" required>
+        </div>
+        <div class="mb-3">
+            <label for="heureDebut" class="form-label">Heure de début :</label>
+            <input type="time" id="heureDebut" name="heureDebut" class="form-control" th:field="*{heureDebut}" required>
+        </div>
+        <div class="mb-3">
+            <label for="heureFin" class="form-label">Heure de fin :</label>
+            <input type="time" id="heureFin" name="heureFin" class="form-control" th:field="*{heureFin}" required>
+        </div>
+
+        <div class="d-grid gap-2">
+            <!-- ✅ Texte du bouton dynamique -->
+            <button type="submit" class="btn btn-primary"
+                    th:text="${disponibilite.id != null} ? 'Modifier' : 'Ajouter'">
+                Ajouter
+            </button>
+        </div>
+    </form>
+
+    <hr>
+
+    <!-- ✅ Liste des disponibilités -->
+    <h3 class="text-center mt-5 mb-4">Vos disponibilités</h3>
+
+    <div class="list-group">
+        <div th:if="${#lists.isEmpty(disponibilites)}" class="text-center text-muted">
+            Aucune disponibilité enregistrée.
+        </div>
+
+        <div class="list-group-item mb-2" th:each="d : ${disponibilites}">
+            <p><strong>Jour :</strong> <span th:text="${d.jour}"></span></p>
+            <p><strong>Heure de début :</strong> <span th:text="${d.heureDebut}"></span></p>
+            <p><strong>Heure de fin :</strong> <span th:text="${d.heureFin}"></span></p>
+
+            <div class="d-flex justify-content-between">
+                <a th:href="@{/recruteur/disponibilites/modify/{id}(id=${d.id})}" class="btn btn-warning btn-sm">Modifier</a>
+
+                <form th:action="@{/recruteur/disponibilites/delete/{id}(id=${d.id})}" method="post"
+                      th:onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette disponibilité ?');">
+                    <button type="submit" class="btn btn-danger btn-sm">Supprimer</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ✅ Bouton retour -->
+    <div class="mt-4 text-center">
+        <a href="/recruteur/home" class="btn btn-secondary">Retour à l'accueil</a>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>

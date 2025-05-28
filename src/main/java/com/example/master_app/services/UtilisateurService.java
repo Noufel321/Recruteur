@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UtilisateurService {
@@ -21,11 +23,22 @@ public class UtilisateurService {
         return utilisateurRepository.findAll();
     }
 
+
     public Utilisateur getUtilisateurById(int id) {
         return utilisateurRepository.findById(id).orElse(null);
     }
 
 
+//    public List<Utilisateur> getAllCandidats() {
+//        return utilisateurRepository.findAll().stream()
+//                .filter(u -> u.getRole() == Role.CANDIDAT)
+//                .collect(Collectors.toList());
+//    }
+
+
+    public Optional<Utilisateur> getUtilisateurByEmail(String email) {
+        return utilisateurRepository.findByEmail(email);
+    }
 
 
     public Utilisateur createUtilisateur(Utilisateur utilisateur) {

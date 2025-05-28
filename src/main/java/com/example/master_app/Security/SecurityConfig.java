@@ -2,6 +2,8 @@ package com.example.master_app.Security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -17,31 +19,37 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/utilisateur/**").hasRole("RH") // seulement RH
+                        .requestMatchers("/recruteur/login", "/css/**", "/js/**").permitAll() // Permet l'accès à /recruteur/login sans authentification
+                        .requestMatchers("/utilisateur/candidats").hasRole("RECRUTEUR")
+                        .requestMatchers("/recruteur/**").hasRole("RECRUTEUR")
+                        .requestMatchers("/recruteur/**").hasRole("RH")// Accès aux routes Recruteur seulement avec le rôle "RECRUTEUR"
                         .anyRequest().authenticated()
                 )
-                .formLogin()
+                .formLogin(form -> form
+                        .loginPage("/recruteur/login")
+                        .loginProcessingUrl("/process-login")
+                        .defaultSuccessUrl("/recruteur/home", true)
+                        .permitAll()
+                )
+                .logout()
                 .and()
-                .logout();
-
+                .csrf().disable();
         return http.build();
     }
 
-    @Bean
-    public UserDetailsService userDetailsService() {
-        var manager = new InMemoryUserDetailsManager();
-        manager.createUser(
-                User.withUsername("rh")
-                        .password(passwordEncoder().encode("password"))
-                        .roles("RH") // rôle RH
-                        .build()
-        );
-        return manager;
-    }
-
+    // Configuration du password encoder (bcrypt)
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-}
 
+    // Configuration de l'AuthenticationManager
+    @Bean
+    public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
+        AuthenticationManagerBuilder authenticationManagerBuilder =
+                http.getSharedObject(AuthenticationManagerBuilder.class);
+        return authenticationManagerBuilder.build();
+    }
+
+
+}

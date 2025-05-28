@@ -24,7 +24,7 @@
                 <th>Nom</th>
                 <th>Email</th>
                 <th>Rôle</th>
-                <th>Actions</th>
+                <!--<th>Actions</th>-->
             </tr>
             </thead>
             <tbody>
@@ -33,18 +33,18 @@
                 <td th:text="${utilisateur.nom}"></td>
                 <td th:text="${utilisateur.email}"></td>
                 <td th:text="${utilisateur.role}"></td>
-                <td>
+                <!--<td>
                     <a th:href="@{/utilisateur/edit/{id}(id=${utilisateur.id})}" class="btn btn-warning btn-sm">Modifier</a>
                     <a th:href="@{/utilisateur/delete/{id}(id=${utilisateur.id})}" class="btn btn-danger btn-sm">Supprimer</a>
-                </td>
+                </td>-->
             </tr>
             </tbody>
         </table>
 
-        <!-- Lien pour créer un nouvel utilisateur -->
+        <!-- Lien pour créer un nouvel utilisateur
         <div class="text-center mt-3">
             <a href="/utilisateur/new" class="btn btn-success">Créer un nouvel utilisateur</a>
-        </div>
+        </div>-->
     </div>
 </div>
 

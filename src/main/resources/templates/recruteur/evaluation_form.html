@@ -4,44 +4,86 @@
       layout:decorate="layouts/base">
 <head>
     <meta charset="UTF-8">
-    <title>Formulaire Entretien</title>
+    <title>Formulaire Évaluation</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 <div layout:fragment="content">
-<div class="container mt-5">
-    <h2 class="text-center mb-4">Ajouter une évaluation</h2>
+    <div class="container mt-5">
 
-    <form th:action="@{/recruteur/evaluations/ajouter}" method="post" th:object="${evaluation}" class="border p-4 rounded bg-white shadow-sm">
-        <div class="mb-3">
-            <label for="candidat" class="form-label">Candidat :</label>
-            <select id="candidat" name="candidat.id" class="form-select" required>
-                <option value="" disabled selected>-- Sélectionnez un candidat --</option>
-                <option th:each="c : ${candidats}"
-                        th:value="${c.id}"
-                        th:text="${c.nom + ' ' + c.prenom}">Nom Prénom</option>
-            </select>
-        </div>
+        <!-- Titre -->
+        <h2 class="mb-4" th:text="${evaluation.id != null} ? 'Modifier Évaluation' : 'Ajouter Évaluation'">Ajouter Évaluation</h2>
 
-        <div class="mb-3">
-            <label for="note" class="form-label">Note (/20) :</label>
-            <input type="number" step="0.5" min="0" max="20" id="note" class="form-control" th:field="*{note}" required>
-        </div>
+        <!-- Formulaire de modification -->
+        <form th:if="${evaluation.id != null}"
+              th:action="@{/recruteur/evaluations/modifier}"
+              th:object="${evaluation}" method="post" class="row g-3">
 
-        <div class="mb-3">
-            <label for="commentaire" class="form-label">Commentaire :</label>
-            <textarea id="commentaire" rows="4" class="form-control" th:field="*{commentaire}"></textarea>
-        </div>
+            <!-- Champ caché pour l'ID -->
+            <input type="hidden" th:field="*{id}"/>
 
-        <div class="d-grid gap-2">
-            <button type="submit" class="btn btn-primary">Enregistrer l’évaluation</button>
-        </div>
-    </form>
+            <div class="col-md-6">
+                <label for="note" class="form-label">Note (/20) :</label>
+                <input type="number" id="note" step="0.5" min="0" max="20" th:field="*{note}" class="form-control" required />
+            </div>
 
-    <div class="mt-4 text-center">
-        <a href="/recruteur/home" class="btn btn-secondary">Retour à l’accueil</a>
+            <div class="col-md-6">
+                <label for="candidat" class="form-label">Candidat :</label>
+                <select id="candidat" th:field="*{candidat}" class="form-select" required>
+                    <option value="">-- Sélectionner un candidat --</option>
+                    <option th:each="c : ${candidats}"
+                            th:value="${c.id}"
+                            th:text="${c.nom}"
+                            th:selected="${evaluation.candidat != null && evaluation.candidat.id == c.id}">
+                    </option>
+                </select>
+            </div>
+
+
+            <div class="col-12">
+                <label for="commentaire" class="form-label">Commentaire :</label>
+                <textarea id="commentaire" th:field="*{commentaire}" class="form-control" rows="4"></textarea>
+            </div>
+
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary">Modifier</button>
+                <a href="/recruteur/evaluations/liste" class="btn btn-secondary ms-2">Retour à la liste</a>
+            </div>
+        </form>
+
+        <!-- Formulaire d'ajout -->
+        <form th:if="${evaluation.id == null}"
+              th:action="@{/recruteur/evaluations/ajouter}"
+              th:object="${evaluation}" method="post" class="row g-3">
+
+            <div class="col-md-6">
+                <label for="note" class="form-label">Note (/20) :</label>
+                <input type="number" id="note" step="0.5" min="0" max="20" th:field="*{note}" class="form-control" required />
+            </div>
+
+            <div class="col-md-6">
+                <label for="candidat" class="form-label">Candidat :</label>
+                <select id="candidat" th:field="*{candidat}" class="form-select" required>
+                    <option value="">-- Sélectionner un candidat --</option>
+                    <option th:each="c : ${candidats}" th:value="${c.id}" th:text="${c.nom}"></option>
+                </select>
+            </div>
+
+
+
+            <div class="col-12">
+                <label for="commentaire" class="form-label">Commentaire :</label>
+                <textarea id="commentaire" th:field="*{commentaire}" class="form-control" rows="4"></textarea>
+            </div>
+
+            <div class="col-12">
+                <button type="submit" class="btn btn-success">Enregistrer</button>
+                <a href="/recruteur/evaluations/liste" class="btn btn-secondary ms-2">Retour à la liste</a>
+            </div>
+        </form>
     </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -1,6 +1,7 @@
 package com.example.master_app.web;
 
 import com.example.master_app.entities.Utilisateur;
+import com.example.master_app.enumes.Role;
 import com.example.master_app.services.UtilisateurService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -8,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/utilisateur")
@@ -16,12 +18,24 @@ public class UtilisateurController {
     @Autowired
     private UtilisateurService utilisateurService;
 
-    @GetMapping
-    public String getAllUtilisateurs(Model model) {
-        List<Utilisateur> utilisateurs = utilisateurService.getAllUtilisateurs();
-        model.addAttribute("utilisateurs", utilisateurs); // Correction : utiliser "utilisateurs" au lieu de "utilisateur"
-        return "utilisateur/list";
-    }
+//    @GetMapping
+//    public String getAllUtilisateurs(Model model) {
+//        List<Utilisateur> utilisateurs = utilisateurService.getAllUtilisateurs();
+//        model.addAttribute("utilisateurs", utilisateurs); // Correction : utiliser "utilisateurs" au lieu de "utilisateur"
+//        return "utilisateur/list";
+//    }
+@GetMapping("/candidats")
+public String getAllCandidats(Model model) {
+    List<Utilisateur> allUtilisateurs = utilisateurService.getAllUtilisateurs();
+
+    // ✅ Filtrer uniquement les CANDIDAT avec Role.CANDIDAT (enum)
+    List<Utilisateur> candidats = allUtilisateurs.stream()
+            .filter(u -> u.getRole() == Role.CANDIDAT)
+            .collect(Collectors.toList());
+
+    model.addAttribute("utilisateurs", candidats);
+    return "utilisateur/list"; // Tu peux utiliser le même template
+}
 
     @GetMapping("/new")
     public String showUtilisateurForm(Model model) {
@@ -39,6 +53,8 @@ public class UtilisateurController {
             return "utilisateur/form";
         }
     }
+
+
 
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable int id, Model model) {

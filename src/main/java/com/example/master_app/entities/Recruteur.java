@@ -1,32 +1,41 @@
 package com.example.master_app.entities;
 
 import com.example.master_app.enumes.Role;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
+@Getter
+@Setter
 @Entity
 @Table(name = "recruteur")
 public class Recruteur extends Utilisateur {
 
-    // Champ spécifique au recruteur
-    private String departement;
 
-    // Constructeur par défaut
+    @OneToMany(mappedBy = "recruteur", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<DisponibiliteRecruteur> disponibilites = new ArrayList<>();
+    @OneToMany(mappedBy = "recruteur")
+    private List<Evaluation> evaluationsFaites;
     public Recruteur() {
+        // Constructeur vide requis par JPA
     }
 
-    // Constructeur avec tous les champs
-    public Recruteur(int id, String nom, String email, String motDePasse, Role role, String departement) {
+    public Recruteur(int id, String nom, String email, String motDePasse, Role role) {
         super(id, nom, email, motDePasse, role);
-        this.departement = departement;
     }
 
-    // Getters et Setters
-    public String getDepartement() {
-        return departement;
+    // ➕ Ajouter une disponibilité
+    public void ajouterDisponibilite(DisponibiliteRecruteur disponibilite) {
+        disponibilites.add(disponibilite);
+        disponibilite.setRecruteur(this);
     }
 
-    public void setDepartement(String departement) {
-        this.departement = departement;
+    // ➖ Supprimer une disponibilité
+    public void supprimerDisponibilite(DisponibiliteRecruteur disponibilite) {
+        disponibilites.remove(disponibilite);
+        disponibilite.setRecruteur(null);
     }
 }

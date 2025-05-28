@@ -26,7 +26,7 @@
                 <th>Statut</th>
                 <th>Recruteur</th>
                 <th>Candidat</th>
-                <th>Actions</th>
+                <!--<th>Actions</th>-->
             </tr>
             </thead>
             <tbody>
@@ -37,18 +37,18 @@
                 <td th:text="${entretien.statut}"></td>
                 <td th:text="${entretien.recruteur.nom}"></td>
                 <td th:text="${entretien.candidat.nom}"></td>
-                <td>
-                    <a th:href="@{/entretien/edit/{id}(id=${entretien.id})}" class="btn btn-warning btn-sm">Modifier</a>
-                    <a th:href="@{/entretien/delete/{id}(id=${entretien.id})}" class="btn btn-danger btn-sm">Supprimer</a>
-                </td>
+                <!-- <td>
+                     <a th:href="@{/entretien/edit/{id}(id=${entretien.id})}" class="btn btn-warning btn-sm">Modifier</a>
+                     <a th:href="@{/entretien/delete/{id}(id=${entretien.id})}" class="btn btn-danger btn-sm">Supprimer</a>
+                 </td>-->
             </tr>
             </tbody>
         </table>
 
-        <!-- Lien pour créer un nouvel entretien -->
+        <!-- Lien pour créer un nouvel entretien
         <div class="text-center mt-3">
             <a href="/entretien/new" class="btn btn-success">Créer un nouvel entretien</a>
-        </div>
+        </div>-->
     </div>
 </div>
 
