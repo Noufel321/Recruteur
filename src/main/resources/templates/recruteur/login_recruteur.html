@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion Recruteur</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<h2>Connexion Recruteur</h2>
+<form action="/recruteur/login" method="post">
+    <div>
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required>
+    </div>
+    <div>
+        <label for="motDePasse">Mot de passe</label>
+        <input type="password" id="motDePasse" name="motDePasse" required>
+    </div>
+    <button type="submit">Se connecter</button>
+</form>
+<div>
+    <p>Pas encore inscrit ? <a href="/recruteur/register">S'inscrire ici</a></p>
+</div>
+</body>
+</html>
